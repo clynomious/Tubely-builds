@@ -3,7 +3,7 @@
   <h1>Tubely</h1>
   <p>Your avatar. Your stream. All from Android.</p>
   <p>
-    <a href="https://github.com/clynomious/Tubely-builds/releases/tag/v0.1.0-beta.9"><strong>Download Beta 9</strong></a>
+    <a href="https://github.com/clynomious/Tubely-builds/releases/tag/v0.1.0-beta.10"><strong>Download Beta 10</strong></a>
     &nbsp; · &nbsp;
     <a href="https://github.com/clynomious/Tubely-builds/releases">All releases</a>
   </p>
@@ -27,7 +27,8 @@ Bring your PNG avatar to life with your voice, arrange a scene, and go live from
 - Floating TikTok chat and live statistics.
 - Microphone noise suppression and separate game audio controls.
 - Animated avatars and portable `.tbly` profile backups.
-- Automatic update checks when opening the app, with in-app downloads and installation. Manual checks, creator links and Trakteer support are available in **About**.
+- Add multiple browser overlays to a scene.
+- Automatic update checks with a short changelog when opening the app, plus in-app downloads and installation. Manual checks, creator links and Trakteer support are available in **About**.
 
 ## Get started
 
