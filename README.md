@@ -3,7 +3,7 @@
   <h1>Tubely</h1>
   <p>Your avatar. Your stream. All from Android.</p>
   <p>
-    <a href="https://github.com/clynomious/Tubely-builds/releases/tag/v0.1.0-beta.6"><strong>Download Beta 6</strong></a>
+    <a href="https://github.com/clynomious/Tubely-builds/releases/tag/v0.1.0-beta.7"><strong>Download Beta 7</strong></a>
     &nbsp; · &nbsp;
     <a href="https://github.com/clynomious/Tubely-builds/releases">All releases</a>
   </p>
@@ -16,7 +16,7 @@ Bring your PNG avatar to life with your voice, arrange a scene, and go live from
 
 | Choose your setup | What you can do |
 | :--- | :--- |
-| **Studio Live** | Combine screen/game, camera, avatar, image and text sources. Broadcast with your server URL and stream key. |
+| **Studio Live** | Combine screen/game, camera, avatar, image, text and browser URL sources. Broadcast with your server URL and stream key. |
 | **Floating avatar** | Place your avatar over other apps. Drag, resize, adjust opacity or enable click-through. |
 | **Overlay URL** | Add your avatar to a streaming app on the same phone, or OBS and LIVE Studio on your local network. |
 
@@ -25,6 +25,7 @@ Bring your PNG avatar to life with your voice, arrange a scene, and go live from
 - Floating TikTok chat and live statistics.
 - Microphone noise suppression and separate game audio controls.
 - Animated avatars and portable `.tbly` profile backups.
+- Creator links, Trakteer support and in-app update downloads from **About**.
 
 ## Get started
 
