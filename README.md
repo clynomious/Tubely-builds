@@ -34,6 +34,12 @@ Bring your PNG avatar to life with your voice, arrange a scene, and go live from
 
 Your streaming account needs live access and a server URL/stream key for direct broadcasting. Available capture modes and actual resolution/FPS depend on your device and source. This is a beta; see each release for its changes and known limitations.
 
+## Support Tubely
+
+Help Tubely grow and bring new updates sooner.
+
+**[Support Tubely on Trakteer →](https://trakteer.id/clynomious)**
+
 ## Meet the creator
 
 Built by **@clynomious**.
