@@ -59,13 +59,16 @@ export function LatestReleaseProvider({ children }: { children: ReactNode }) {
         setState({ release: saved.release, status: 'ready' });
       }
     } catch { /* A restricted or old cache never prevents API lookup. */ }
-    void refresh();
     const recheck = () => { if (!document.hidden) void refresh(); };
+    // Let the opening images finish first. Download clicks still look up the APK immediately.
+    if (document.readyState === 'complete') recheck();
+    else window.addEventListener('load', recheck, { once: true });
     const timer = window.setInterval(recheck, RELEASE_CACHE_MS);
     document.addEventListener('visibilitychange', recheck);
     return () => {
       mounted.current = false;
       window.clearInterval(timer);
+      window.removeEventListener('load', recheck);
       document.removeEventListener('visibilitychange', recheck);
       const aborted = controller.current;
       controller.current = null;

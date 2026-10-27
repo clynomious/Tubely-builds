@@ -1,7 +1,7 @@
 'use client';
 
-import Image from 'next/image';
-import { AnimatePresence, MotionConfig, motion, useInView, useMotionValue, useMotionValueEvent, useReducedMotion, useSpring, useTransform, type MotionValue } from 'motion/react';
+import { AnimatePresence, LazyMotion, MotionConfig, useInView, useMotionValue, useMotionValueEvent, useReducedMotion, useSpring, useTransform, type MotionValue } from 'motion/react';
+import * as motion from 'motion/react-m';
 import { ArrowDown, ArrowRight, ArrowUpRight, ArrowsOut, Broadcast, Check, Coffee, Flower, GithubLogo, Heart, InstagramLogo, LinkSimple, Microphone, MoonStars, Pause, Play, Plus, Sparkle, Star, TiktokLogo, X } from '@phosphor-icons/react';
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { site } from '@/lib/site';
@@ -10,9 +10,10 @@ import { LatestReleaseProvider, DownloadLink, ReleaseCaption } from './latest-re
 import { DemoMotion } from './demo-motion';
 import { AmbientBackground } from './ambient-background';
 import { useSceneScroll } from './use-scene-scroll';
-import { staticImageLoader } from '@/lib/static-image-loader';
+import { HERO_MASCOT_SIZES, ResponsiveImage, letterImageSizes, type ImageName } from './responsive-image';
 
 const MotionPreference = createContext(false);
+const loadMotionFeatures = () => import('./motion-features').then(module => module.default);
 
 function SkipLink() {
   const navigate = useWeightedNavigation();
@@ -32,24 +33,22 @@ const screens = [
   { key: 'settings', label: 'Settings' },
 ];
 
-function BrandImage({ name, alt = '', className = '', eager = false, width = 640, height = 640, sizes = '(max-width: 700px) 80vw, 520px' }: {
-  name: string; alt?: string; className?: string; eager?: boolean; width?: number; height?: number; sizes?: string;
+function BrandImage({ name, alt = '', className = '', eager = false, priority = false, sizes = '(max-width: 700px) 80vw, 520px' }: {
+  name: ImageName; alt?: string; className?: string; eager?: boolean; priority?: boolean; sizes?: string;
 }) {
-  return <Image src={`/images/${name}.webp`} alt={alt} width={width} height={height} className={className}
-    loader={name.startsWith('letter-') ? undefined : staticImageLoader} unoptimized={name.startsWith('letter-')}
-    loading={eager || name === 'mascot' ? 'eager' : 'lazy'} fetchPriority={eager ? 'high' : 'auto'} sizes={sizes} draggable={false} />;
+  return <ResponsiveImage name={name} alt={alt} className={className} eager={eager} priority={priority} sizes={sizes} />;
 }
 
-function Phone({ screen, eager = false }: { screen: string; eager?: boolean }) {
-  return <div className="phone"><Image src={`/images/screen-${screen}.webp`}
-    alt={`Tubely ${screens.find(s => s.key === screen)?.label ?? screen} screen`} width={640} height={1423}
-    loader={staticImageLoader} unoptimized={false} sizes="(max-width: 640px) 178px, (max-width: 800px) 190px, 228px" loading={eager || screen === 'studio' || screen === 'home' ? 'eager' : 'lazy'} fetchPriority={eager ? 'high' : 'auto'} draggable={false} />
+function Phone({ screen, eager = false, sizes = '(max-width: 640px) 168px, (max-width: 800px) 176px, (max-width: 1100px) 196px, 214px' }: { screen: string; eager?: boolean; sizes?: string }) {
+  return <div className="phone"><ResponsiveImage name={`screen-${screen}` as ImageName}
+    alt={`Tubely ${screens.find(s => s.key === screen)?.label ?? screen} screen`} eager={eager} sizes={sizes} />
     <span className="phone-camera" aria-hidden="true" /></div>;
 }
 
 function OverlayLoop() {
   const ref = useRef<HTMLVideoElement>(null);
   const visible = useInView(ref, { margin: '80px' });
+  const prepare = useInView(ref, { margin: '600px', once: true });
   const paused = useContext(MotionPreference);
   useEffect(() => {
     const el = ref.current;
@@ -62,7 +61,7 @@ function OverlayLoop() {
     document.addEventListener('visibilitychange', update);
     return () => { el.pause(); document.removeEventListener('visibilitychange', update); };
   }, [visible, paused]);
-  return <video ref={ref} loop muted playsInline preload="none" poster="/images/overlay-poster.webp" aria-label="Animated Tubely overlay"><source src="/media/tubely-overlay.webm" type="video/webm" /></video>;
+  return <video ref={ref} loop muted playsInline preload="none" poster={prepare ? '/images/overlay-poster.webp' : undefined} aria-label="Animated Tubely overlay"><source src="/media/tubely-overlay.webm" type="video/webm" /></video>;
 }
 
 // Geometric signal traces carry the voice-to-broadcast narrative.
@@ -104,10 +103,10 @@ function Hero() {
       px.set(((e.clientX - r.left) / r.width - .5) * 20); py.set(-((e.clientY - r.top) / r.height - .5) * 14);
     }} onPointerLeave={() => { px.set(0); py.set(0); }}>
       <SignalOrbit progress={p} />
-      <motion.div className="hero-device" style={paused ? undefined : { y: phoneY, rotate: phoneRotate, rotateY: -24 }}><div className="hero-device-entry"><Phone screen="studio" eager /></div></motion.div>
+      <motion.div className="hero-device" style={paused ? undefined : { y: phoneY, rotate: phoneRotate, rotateY: -24 }}><div className="hero-device-entry"><Phone screen="studio" eager sizes="(max-width: 360px) 120px, (max-width: 640px) 135px, (max-width: 800px) 151px, (max-width: 1100px) 156px, 191px" /></div></motion.div>
       <motion.div className="hero-mascot-travel" style={paused ? undefined : { y: catY, rotate: catTurn }}>
         <motion.button className="hero-mascot" aria-label="Pet the Tubely mascot" onClick={() => setPets(n => n + 1)} style={paused ? undefined : { rotateX: tiltX, rotateY: tiltY }} whileTap={paused ? undefined : { scale: .92 }}>
-          <div className="hero-mascot-entry"><BrandImage name="mascot" eager sizes="(max-width: 700px) 68vw, 440px" /></div>
+          <div className="hero-mascot-entry"><BrandImage name="mascot" eager priority sizes={HERO_MASCOT_SIZES} /></div>
           <AnimatePresence>{pets > 0 && <motion.span key={pets} className="pet-heart" initial={paused ? false : { scale: .4, y: 0, opacity: 1 }} animate={{ scale: 1.5, y: paused ? 0 : -150, opacity: 0 }} transition={{ duration: paused ? .15 : 1.2 }}><Heart weight="fill" /></motion.span>}</AnimatePresence>
         </motion.button>
       </motion.div>
@@ -145,7 +144,7 @@ function JellyLetter({ letter, index, progress, ready }: {
         }
       }} whileHover={paused || !ready ? undefined : { scale: 1.1, rotate: index % 2 ? 8 : -8 }}
       whileDrag={paused ? undefined : { scale: 1.06 }} transition={{ type: 'spring', stiffness: 260, damping: 19 }}>
-      <BrandImage name={`letter-${letter}`} sizes="(max-width: 700px) 16vw, 190px" />
+      <BrandImage name={`letter-${letter}` as ImageName} sizes={letterImageSizes(`letter-${letter}` as ImageName)} />
     </motion.button>
   </motion.div>;
 }
@@ -218,7 +217,7 @@ function LiveScene({ progress }: { progress: MotionValue<number> }) {
   const ring1 = useTransform(progress, [.7, .9], [.1, 1]);
   const ring2 = useTransform(progress, [.8, 1], [.1, 1]);
   return <div className="live-scene scene-visual"><svg className="broadcast-svg" viewBox="0 0 640 640" fill="none" aria-hidden="true"><motion.circle cx="320" cy="320" r="195" stroke="currentColor" strokeWidth="2" strokeDasharray="5 12" style={{ pathLength: paused ? 1 : ring1 }} /><motion.circle cx="320" cy="320" r="265" stroke="currentColor" strokeWidth="2" style={{ pathLength: paused ? 1 : ring2 }} /><motion.circle cx="320" cy="320" r="300" stroke="currentColor" strokeOpacity=".2" style={{ scale: paused ? 1 : scale }} /></svg>
-    <motion.div className="live-device" style={paused ? undefined : { rotateY, rotateZ, scale }}><Phone screen="studio" /></motion.div><span className="on-air"><Broadcast weight="fill" /> LIVE</span>
+    <motion.div className="live-device" style={paused ? undefined : { rotateY, rotateZ, scale }}><Phone screen="studio" sizes="(max-width: 640px) 123px, (max-width: 800px) 154px, (max-width: 1100px) 171px, 191px" /></motion.div><span className="on-air"><Broadcast weight="fill" /> LIVE</span>
   </div>;
 }
 
@@ -380,6 +379,7 @@ function SupportHeart({ index, progress }: { index: number; progress: MotionValu
 function CreatorCorner() {
   const ref = useRef<HTMLElement>(null);
   const paused = useContext(MotionPreference);
+  const nearby = useInView(ref, { margin: '320px' });
   const p = useSceneScroll(ref, 'through', !paused);
   const lift = useTransform(p, [0, .4, 1], [90, 0, -30]);
   const rotate = useTransform(p, [0, .4, 1], [-5, 0, 2]);
@@ -393,7 +393,7 @@ function CreatorCorner() {
     { label: 'TikTok', href: site.socials.tiktok, icon: TiktokLogo },
   ];
   return <section className="creator-section wrap" id="support" ref={ref}>
-    <motion.div className="support-frame" style={paused ? undefined : { y: lift, rotate, clipPath }}>
+    <motion.div className="support-frame" style={paused ? undefined : { y: lift, rotate, clipPath: nearby ? clipPath : 'inset(8% 4% 8% 4% round 45px)' }}>
       <motion.div className="support-card" style={paused ? undefined : { rotateX: tiltX, rotateY: tiltY }} onPointerMove={e => {
         if (paused || e.pointerType !== 'mouse') return;
         const r = e.currentTarget.getBoundingClientRect();
@@ -440,11 +440,11 @@ export function TubelyExperience() {
     document.addEventListener('keydown', escape);
     return () => document.removeEventListener('keydown', escape);
   }, [menu]);
-  return <MotionPreference.Provider value={paused}><MotionConfig reducedMotion={paused ? 'always' : 'user'}><LatestReleaseProvider><WeightedScroll enabled={!paused}><div className="experience" data-motion={paused ? 'off' : 'on'}><AmbientBackground paused={paused} /><SkipLink />
-    <header className="site-header wrap"><a href="#home" className="brand" aria-label="Tubely, back to top"><BrandImage name="logo" alt="Tubely" eager width={820} height={273} sizes="170px" /></a>
+  return <MotionPreference.Provider value={paused}><MotionConfig reducedMotion={paused ? 'always' : 'user'}><LazyMotion features={loadMotionFeatures} strict><LatestReleaseProvider><WeightedScroll enabled={!paused}><div className="experience" data-motion={paused ? 'off' : 'on'}><AmbientBackground paused={paused} /><SkipLink />
+    <header className="site-header wrap"><a href="#home" className="brand" aria-label="Tubely, back to top"><BrandImage name="logo" alt="Tubely" eager sizes="(max-width: 360px) 109px, (max-width: 640px) 125px, (max-width: 800px) 130px, (max-width: 1100px) 145px, 168px" /></a>
       <nav className={menu ? 'nav-open' : ''} aria-label="Main navigation"><a href="#story" onClick={() => setMenu(false)}>The story</a><a href="#playground" onClick={() => setMenu(false)}>Let’s play</a><a href="#support" onClick={() => setMenu(false)}>Support Tubely</a></nav>
       <div className="header-actions"><button className="motion-toggle" aria-pressed={paused} onClick={() => setManualPause(v => !v)} disabled={Boolean(systemReduced)} aria-label={systemReduced ? 'Animation follows your device settings' : paused ? 'Resume animation and smooth scrolling' : 'Pause animation and smooth scrolling'}>{paused ? <Play weight="fill" /> : <Pause weight="fill" />}</button><DownloadLink className="nav-download">Get Tubely <ArrowUpRight weight="bold" /></DownloadLink><button className="menu-toggle" onClick={() => setMenu(v => !v)} aria-label={menu ? 'Close menu' : 'Open menu'} aria-expanded={menu}>{menu ? <X /> : <Plus />}</button></div>
     </header><main id="main" tabIndex={-1}><Hero /><BrandAssembly /><ScrollStory /><Playground /><AppGallery /><Outputs /><FAQ /><CreatorCorner /><Download /></main>
     <footer className="site-footer wrap"><a className="footer-wordmark" href="#home">Tubely</a><p className="creator-credit">Built with <Heart weight="fill" aria-hidden="true" /><span className="sr-only">love</span> by <a href={site.socials.github} target="_blank" rel="noopener noreferrer">{site.creator}</a></p><a className="footer-releases" href={site.releases} target="_blank" rel="noopener noreferrer">What’s new <ArrowUpRight /></a></footer>
-  </div></WeightedScroll></LatestReleaseProvider></MotionConfig></MotionPreference.Provider>;
+  </div></WeightedScroll></LatestReleaseProvider></LazyMotion></MotionConfig></MotionPreference.Provider>;
 }

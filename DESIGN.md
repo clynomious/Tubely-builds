@@ -172,7 +172,7 @@ Large circles, elliptical SVG orbits, rounded pose sheets, pills, and organic pa
 
 ## Do's and Don'ts
 
-Mobile performance preserves this visual system: viewport-scoped scroll subscriptions retain native ViewTimeline support, transparent story acts stop painting while crossfades remain intact, story colors blend through constant-color layers, and Lenis schedules frames only while smoothing. Responsive WebP variants and a WebP video poster reduce unnecessary image transfer and decoding. These changes retain the original motion geometry, timings, touch/keyboard controls, and reduced-motion flow; they are not measured performance claims.
+Mobile performance preserves this visual system: viewport-scoped scroll subscriptions retain native ViewTimeline support, transparent story acts stop painting while crossfades remain intact, story colors blend through constant-color layers, and Lenis schedules frames only while smoothing. Native responsive pictures select AVIF or WebP at the actual display size. Only the opening mascot receives high priority and a matching preload; below-fold images and the video poster wait until needed. Content-hashed asset names support immutable caching. LazyMotion retains the complete domMax interaction set in a separate chunk. The flowing trace has its own paint layer, and the support clip animation attaches near the viewport. These changes retain the original motion geometry, timings, touch/keyboard controls, and reduced-motion flow; they are not measured performance claims.
 
 ### Do:
 - **Do** state PNGTuber and live streaming clearly while retaining Tubely's kawaii Android identity.

@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Nunito } from 'next/font/google';
 import { site } from '@/lib/site';
+import images from '@/lib/image-manifest.json';
+import { HERO_MASCOT_SIZES } from '@/components/responsive-image';
 import 'lenis/dist/lenis.css';
 import './globals.css';
 
@@ -23,5 +25,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { themeColor: '#f7f0ff', colorScheme: 'light' };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" className={nunito.variable}><body>{children}</body></html>;
+  return <html lang="en" className={nunito.variable}><head>
+    <link rel="preload" as="image" type="image/avif" imageSrcSet={images.mascot.avif} imageSizes={HERO_MASCOT_SIZES} fetchPriority="high" />
+  </head><body>{children}</body></html>;
 }

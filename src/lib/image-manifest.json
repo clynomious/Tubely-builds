@@ -1,0 +1,114 @@
+{
+  "letter-b": {
+    "width": 300,
+    "height": 356,
+    "src": "/images/optimized/letter-b-300-7877013f23.webp",
+    "avif": "/images/optimized/letter-b-64-52326fbce0.avif 64w, /images/optimized/letter-b-96-08c3e4d3f9.avif 96w, /images/optimized/letter-b-160-f4cc077dd1.avif 160w, /images/optimized/letter-b-240-e36400b1a2.avif 240w, /images/optimized/letter-b-300-04b8d1795d.avif 300w",
+    "webp": "/images/optimized/letter-b-64-1a8579f921.webp 64w, /images/optimized/letter-b-96-6423288059.webp 96w, /images/optimized/letter-b-160-1cd6c15e58.webp 160w, /images/optimized/letter-b-240-83b0c361f8.webp 240w, /images/optimized/letter-b-300-7877013f23.webp 300w"
+  },
+  "letter-e": {
+    "width": 300,
+    "height": 308,
+    "src": "/images/optimized/letter-e-300-73347e8050.webp",
+    "avif": "/images/optimized/letter-e-64-6e6a38a7fe.avif 64w, /images/optimized/letter-e-96-744dd6cb8d.avif 96w, /images/optimized/letter-e-160-a299a0c7c1.avif 160w, /images/optimized/letter-e-240-90ba90cd26.avif 240w, /images/optimized/letter-e-300-d9bff2085c.avif 300w",
+    "webp": "/images/optimized/letter-e-64-ea9ab27eca.webp 64w, /images/optimized/letter-e-96-4ea62a0fd8.webp 96w, /images/optimized/letter-e-160-4ce73983da.webp 160w, /images/optimized/letter-e-240-fa86d6b1d1.webp 240w, /images/optimized/letter-e-300-73347e8050.webp 300w"
+  },
+  "letter-l": {
+    "width": 300,
+    "height": 559,
+    "src": "/images/optimized/letter-l-300-3af7d14238.webp",
+    "avif": "/images/optimized/letter-l-64-05f08bad07.avif 64w, /images/optimized/letter-l-96-18e738c1d0.avif 96w, /images/optimized/letter-l-160-73312e6375.avif 160w, /images/optimized/letter-l-240-641521fbab.avif 240w, /images/optimized/letter-l-300-75c4cd642a.avif 300w",
+    "webp": "/images/optimized/letter-l-64-caef106ae8.webp 64w, /images/optimized/letter-l-96-cd6daf044a.webp 96w, /images/optimized/letter-l-160-a580b6ef36.webp 160w, /images/optimized/letter-l-240-ed3f237425.webp 240w, /images/optimized/letter-l-300-3af7d14238.webp 300w"
+  },
+  "letter-t": {
+    "width": 300,
+    "height": 288,
+    "src": "/images/optimized/letter-t-300-047b593554.webp",
+    "avif": "/images/optimized/letter-t-64-c5a5e92729.avif 64w, /images/optimized/letter-t-96-3f20197428.avif 96w, /images/optimized/letter-t-160-9397486571.avif 160w, /images/optimized/letter-t-240-8795f3acef.avif 240w, /images/optimized/letter-t-300-f63143e1df.avif 300w",
+    "webp": "/images/optimized/letter-t-64-2cb082fe72.webp 64w, /images/optimized/letter-t-96-af624a8184.webp 96w, /images/optimized/letter-t-160-b37047c18d.webp 160w, /images/optimized/letter-t-240-fc521b6d9e.webp 240w, /images/optimized/letter-t-300-047b593554.webp 300w"
+  },
+  "letter-u": {
+    "width": 300,
+    "height": 264,
+    "src": "/images/optimized/letter-u-300-48d1a73be7.webp",
+    "avif": "/images/optimized/letter-u-64-748d457f0d.avif 64w, /images/optimized/letter-u-96-4f28946037.avif 96w, /images/optimized/letter-u-160-bbd72e45f5.avif 160w, /images/optimized/letter-u-240-63749b772c.avif 240w, /images/optimized/letter-u-300-d5443d0192.avif 300w",
+    "webp": "/images/optimized/letter-u-64-b5dd47655d.webp 64w, /images/optimized/letter-u-96-587013f256.webp 96w, /images/optimized/letter-u-160-388f7c2e37.webp 160w, /images/optimized/letter-u-240-23866a65ba.webp 240w, /images/optimized/letter-u-300-48d1a73be7.webp 300w"
+  },
+  "letter-y": {
+    "width": 300,
+    "height": 360,
+    "src": "/images/optimized/letter-y-300-feff144906.webp",
+    "avif": "/images/optimized/letter-y-64-97dc552bbf.avif 64w, /images/optimized/letter-y-96-1d487da303.avif 96w, /images/optimized/letter-y-160-8ed19c5c0a.avif 160w, /images/optimized/letter-y-240-a840b60cd1.avif 240w, /images/optimized/letter-y-300-1f7102b659.avif 300w",
+    "webp": "/images/optimized/letter-y-64-b4c6811835.webp 64w, /images/optimized/letter-y-96-0c9cb124a9.webp 96w, /images/optimized/letter-y-160-506a119fbe.webp 160w, /images/optimized/letter-y-240-f9c4af0fbe.webp 240w, /images/optimized/letter-y-300-feff144906.webp 300w"
+  },
+  "logo-stacked": {
+    "width": 820,
+    "height": 769,
+    "src": "/images/optimized/logo-stacked-480-fa4cc456fb.webp",
+    "avif": "/images/optimized/logo-stacked-240-959eb18bfb.avif 240w, /images/optimized/logo-stacked-320-ebde85a907.avif 320w, /images/optimized/logo-stacked-480-a9ae1f1fa3.avif 480w, /images/optimized/logo-stacked-640-e44cc349b7.avif 640w, /images/optimized/logo-stacked-820-2a532061c4.avif 820w",
+    "webp": "/images/optimized/logo-stacked-240-937c8d524e.webp 240w, /images/optimized/logo-stacked-320-40e9cd8a3a.webp 320w, /images/optimized/logo-stacked-480-fa4cc456fb.webp 480w, /images/optimized/logo-stacked-640-f0ccf5a855.webp 640w, /images/optimized/logo-stacked-820-4fc566d834.webp 820w"
+  },
+  "logo": {
+    "width": 820,
+    "height": 277,
+    "src": "/images/optimized/logo-480-23cb1f365e.webp",
+    "avif": "/images/optimized/logo-160-252e5d7325.avif 160w, /images/optimized/logo-240-90dcc1b130.avif 240w, /images/optimized/logo-320-7a3d1fca61.avif 320w, /images/optimized/logo-480-e8742a078b.avif 480w, /images/optimized/logo-640-5432d9da42.avif 640w, /images/optimized/logo-820-90f2e67e12.avif 820w",
+    "webp": "/images/optimized/logo-160-7c41cd576a.webp 160w, /images/optimized/logo-240-5cc732dc55.webp 240w, /images/optimized/logo-320-e859b73f0a.webp 320w, /images/optimized/logo-480-23cb1f365e.webp 480w, /images/optimized/logo-640-c433efeeed.webp 640w, /images/optimized/logo-820-ca6bf0174a.webp 820w"
+  },
+  "mascot": {
+    "width": 820,
+    "height": 749,
+    "src": "/images/optimized/mascot-480-52257a4208.webp",
+    "avif": "/images/optimized/mascot-240-141c51a9ff.avif 240w, /images/optimized/mascot-320-1740a2c28b.avif 320w, /images/optimized/mascot-480-7c4c90781c.avif 480w, /images/optimized/mascot-640-433a2daf3f.avif 640w, /images/optimized/mascot-820-117bd5729d.avif 820w",
+    "webp": "/images/optimized/mascot-240-6cee91f193.webp 240w, /images/optimized/mascot-320-c46d72bfab.webp 320w, /images/optimized/mascot-480-52257a4208.webp 480w, /images/optimized/mascot-640-65d8455483.webp 640w, /images/optimized/mascot-820-65cada1aa9.webp 820w"
+  },
+  "screen-avatars": {
+    "width": 640,
+    "height": 1423,
+    "src": "/images/optimized/screen-avatars-480-27582874b1.webp",
+    "avif": "/images/optimized/screen-avatars-240-d804b7f0a3.avif 240w, /images/optimized/screen-avatars-320-0f5ed22ee3.avif 320w, /images/optimized/screen-avatars-480-a650f5f178.avif 480w, /images/optimized/screen-avatars-640-ad9b8f71b4.avif 640w",
+    "webp": "/images/optimized/screen-avatars-240-ca9b9c36df.webp 240w, /images/optimized/screen-avatars-320-676cb515c0.webp 320w, /images/optimized/screen-avatars-480-27582874b1.webp 480w, /images/optimized/screen-avatars-640-e43912cf26.webp 640w"
+  },
+  "screen-expressions": {
+    "width": 640,
+    "height": 1423,
+    "src": "/images/optimized/screen-expressions-480-c66b39890e.webp",
+    "avif": "/images/optimized/screen-expressions-240-74a0ec34f6.avif 240w, /images/optimized/screen-expressions-320-b1ddeb4e42.avif 320w, /images/optimized/screen-expressions-480-b82354b933.avif 480w, /images/optimized/screen-expressions-640-e95f85049c.avif 640w",
+    "webp": "/images/optimized/screen-expressions-240-07ea523ed4.webp 240w, /images/optimized/screen-expressions-320-74b318bb3c.webp 320w, /images/optimized/screen-expressions-480-c66b39890e.webp 480w, /images/optimized/screen-expressions-640-d2498529e5.webp 640w"
+  },
+  "screen-home": {
+    "width": 640,
+    "height": 1423,
+    "src": "/images/optimized/screen-home-480-00c432eb1a.webp",
+    "avif": "/images/optimized/screen-home-240-92beb6a81e.avif 240w, /images/optimized/screen-home-320-d48602db6d.avif 320w, /images/optimized/screen-home-480-e03e07889e.avif 480w, /images/optimized/screen-home-640-88f775658b.avif 640w",
+    "webp": "/images/optimized/screen-home-240-9d7b4ee0f4.webp 240w, /images/optimized/screen-home-320-755f5caad7.webp 320w, /images/optimized/screen-home-480-00c432eb1a.webp 480w, /images/optimized/screen-home-640-7d2e52bc18.webp 640w"
+  },
+  "screen-motion": {
+    "width": 640,
+    "height": 1423,
+    "src": "/images/optimized/screen-motion-480-7524547384.webp",
+    "avif": "/images/optimized/screen-motion-240-7be531f93d.avif 240w, /images/optimized/screen-motion-320-bf19a367a4.avif 320w, /images/optimized/screen-motion-480-42bede9832.avif 480w, /images/optimized/screen-motion-640-b811f43ff1.avif 640w",
+    "webp": "/images/optimized/screen-motion-240-bbe8fbf4b6.webp 240w, /images/optimized/screen-motion-320-d17a338f5a.webp 320w, /images/optimized/screen-motion-480-7524547384.webp 480w, /images/optimized/screen-motion-640-780dce1b7e.webp 640w"
+  },
+  "screen-settings": {
+    "width": 640,
+    "height": 1423,
+    "src": "/images/optimized/screen-settings-480-9199dd7d14.webp",
+    "avif": "/images/optimized/screen-settings-240-8ea2cc3011.avif 240w, /images/optimized/screen-settings-320-0a3d0d5762.avif 320w, /images/optimized/screen-settings-480-fe604f5cd2.avif 480w, /images/optimized/screen-settings-640-b5828e221c.avif 640w",
+    "webp": "/images/optimized/screen-settings-240-3d9faeccef.webp 240w, /images/optimized/screen-settings-320-bbde840f13.webp 320w, /images/optimized/screen-settings-480-9199dd7d14.webp 480w, /images/optimized/screen-settings-640-8dad5cec42.webp 640w"
+  },
+  "screen-studio": {
+    "width": 640,
+    "height": 1423,
+    "src": "/images/optimized/screen-studio-480-902b8e1c20.webp",
+    "avif": "/images/optimized/screen-studio-240-552e349ef8.avif 240w, /images/optimized/screen-studio-320-a1fc6178f0.avif 320w, /images/optimized/screen-studio-480-98b62c74c2.avif 480w, /images/optimized/screen-studio-640-f519e9e820.avif 640w",
+    "webp": "/images/optimized/screen-studio-240-26e099035a.webp 240w, /images/optimized/screen-studio-320-c6617ad254.webp 320w, /images/optimized/screen-studio-480-902b8e1c20.webp 480w, /images/optimized/screen-studio-640-7b3c64a91d.webp 640w"
+  },
+  "screen-voice": {
+    "width": 640,
+    "height": 1423,
+    "src": "/images/optimized/screen-voice-480-ab4d5bb13b.webp",
+    "avif": "/images/optimized/screen-voice-240-d8dd3daf20.avif 240w, /images/optimized/screen-voice-320-0aaf01bd9c.avif 320w, /images/optimized/screen-voice-480-3e63e60428.avif 480w, /images/optimized/screen-voice-640-6dc007cdfa.avif 640w",
+    "webp": "/images/optimized/screen-voice-240-6991db49b0.webp 240w, /images/optimized/screen-voice-320-b0f08fa868.webp 320w, /images/optimized/screen-voice-480-ab4d5bb13b.webp 480w, /images/optimized/screen-voice-640-19310da209.webp 640w"
+  }
+}
