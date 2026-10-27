@@ -5,12 +5,11 @@ Next.js App Router website for Tubely, a PNGTuber and live streaming app for And
 ## Local development
 
 ```powershell
-cd website
 npm install
 npm run dev
 ```
 
-Open http://localhost:3000. Requires Node.js 20.9 or newer. Dependencies and local assets have already been prepared.
+Run these commands from the repository root, then open http://localhost:3000. Requires Node.js 20.9 or newer. Ready-to-use local assets are committed.
 
 ## Live release downloads
 
@@ -46,6 +45,8 @@ Social metadata uses `NEXT_PUBLIC_SITE_URL` as its base URL. Copy `.env.example`
 The motion demo does not request microphone access. There are no website accounts, analytics, or payment forms; support is handled on the creator's external Trakteer page.
 
 ## Production preparation
+
+For Vercel, import this repository with the **Next.js** framework preset and **Root Directory** set to `./`. Keep the build and output defaults. The source, package manifest, lockfile, and public assets all live at the repository root. Set `NEXT_PUBLIC_SITE_URL` to the public HTTPS domain if you use a custom domain; otherwise the Vercel production-domain fallback applies. An existing project configured with `website` as its root must be updated to `./`.
 
 ```powershell
 npm run typecheck

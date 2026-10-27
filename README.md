@@ -1,6 +1,5 @@
 <div align="center">
-  <img src="assets/tubely-mascot.png" width="128" alt="Tubely mascot" />
-  <h1>Tubely</h1>
+  <img src="public/images/logo.webp" width="480" alt="Tubely" />
   <p>Your avatar. Your stream. All from Android.</p>
   <p>
     <a href="https://github.com/clynomious/Tubely-builds/releases/tag/v0.1.0-beta.10"><strong>Download Beta 10</strong></a>
@@ -13,6 +12,20 @@
 ## Make it your stream
 
 Bring your PNG avatar to life with your voice, arrange a scene, and go live from your phone.
+
+<p align="center">
+  <img src="public/images/screen-home.webp" width="180" alt="Tubely home and avatar preview" />
+  &nbsp;
+  <img src="public/images/screen-expressions.webp" width="180" alt="Idle, speaking, blink and muted expressions" />
+  &nbsp;
+  <img src="public/images/screen-studio.webp" width="180" alt="Studio Live scene and layer controls" />
+</p>
+
+<p align="center">
+  <a href="public/media/tubely-overlay.webm"><img src="public/images/overlay-poster.png" width="540" alt="Watch the Tubely avatar overlay demo" /></a>
+  <br />
+  <a href="public/media/tubely-overlay.webm">Watch the overlay demo →</a>
+</p>
 
 | Choose your setup | What you can do |
 | :--- | :--- |
@@ -40,9 +53,15 @@ Your streaming account needs live access and a server URL/stream key for direct 
 
 ## Website source
 
-The Tubely landing page lives in [`website/`](website/README.md), built with Next.js. It includes interactive avatar previews, the original app screenshots, and direct APK downloads that follow GitHub releases.
+The Next.js landing page lives directly at the repository root. It includes interactive avatar previews, the original app screenshots, and direct APK downloads that follow GitHub releases. See [website development notes](WEBSITE.md).
 
-For local development, run `npm install` and `npm run dev` inside `website/`.
+For local development, run `npm install` and `npm run dev` from this directory.
+
+### Deploy to Vercel
+
+Import this repository, choose **Next.js**, and keep **Root Directory** at **`./`**. Leave the build and output settings at their framework defaults. If the project previously used `website` as its root, change that setting to `./`.
+
+Set `NEXT_PUBLIC_SITE_URL` to your public HTTPS domain for social sharing previews. If omitted, the website uses Vercel's production domain when available. No GitHub token is needed for release downloads.
 
 ## Support Tubely
 

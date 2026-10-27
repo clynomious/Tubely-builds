@@ -89,7 +89,7 @@ components:
 
 **Creative North Star: "Your little streaming world"**
 
-Tubely is a PNGTuber **and live streaming** Android app. Mode: Persuade. Its supplied kawaii mascot, jelly letters, wordmarks, pastel palette, and rounded Nunito typography remain the visual authority. This record applies only to `website/`.
+Tubely is a PNGTuber **and live streaming** Android app. Mode: Persuade. Its supplied kawaii mascot, jelly letters, wordmarks, pastel palette, and rounded Nunito typography remain the visual authority. This record applies to the Next.js landing page at the repository root.
 
 The current composition uses large, concise copy and a continuous character-to-broadcast story. Oversized type, a mascot, and a 3D device share the opening plane; SVG traces, assembling letters, layered scenes, and fanning screenshots carry the explanation. The previous small-copy stage-and-card composition is superseded.
 
