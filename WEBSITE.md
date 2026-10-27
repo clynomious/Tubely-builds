@@ -34,6 +34,16 @@ Pause and reduced motion disable decorative movement and weighted scrolling. The
 
 Lenis uses the native document scroll position with `lerp: 0.065`, `wheelMultiplier: 0.8`, and native touch behavior. Anchors and chapter buttons share its controller. Skip navigation transfers focus to the main content. The page is not wrapped in a transformed scroll container.
 
+## Mobile rendering
+
+All choreography, timing, SVG drawing, 3D scenes, gallery geometry, and interactions are retained. Scene scroll subscribers attach within a 320px viewport margin and disconnect outside it or while the tab is hidden. Native ViewTimeline acceleration remains available on supporting browsers. Story acts keep both sides of each crossfade active; fully transparent acts hide their paint and clamp their JavaScript progress until needed again. The story's original four background colors crossfade as constant-color layers instead of repainting the viewport background on every scroll frame.
+
+Lenis requests animation frames only during wheel or anchor smoothing, with the same easing and native touch behavior. Its clock resets when waking after an idle period so the next transition does not jump. Pause and hidden-tab cleanup cancel scheduled work.
+
+Brand images and screenshots use prebuilt responsive WebP variants through a static image loader, with display-size hints for the individual scenes. This works with static export and does not require an image server. Original images remain available at larger sizes; letters keep their existing small assets. The video retains the original animation and uses a WebP still poster. Regenerate variants from the committed originals with `npm run assets:responsive`; importing the original supplied assets also runs this step.
+
+These are source-level optimizations. No mobile benchmark, browser/device exercise, typecheck, or build was run for this revision; no measured frame-rate or Web Vitals improvement is claimed.
+
 ## Configuration and assets
 
 `src/lib/site.ts` stores API, release, creator and support URLs. Trakteer uses `https://trakteer.id/clynomious`, without trailing punctuation. The support copy invites contributions toward development time, without promising a release schedule.

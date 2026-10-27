@@ -6,7 +6,8 @@
     "dev": "next dev --hostname 0.0.0.0",
     "build": "next build",
     "typecheck": "tsc --noEmit",
-    "assets": "node scripts/prepare-assets.mjs"
+    "assets": "node scripts/prepare-assets.mjs",
+    "assets:responsive": "node scripts/prepare-responsive-assets.mjs"
   },
   "dependencies": {
     "@phosphor-icons/react": "latest",

@@ -12,25 +12,55 @@ export function useWeightedNavigation() {
 
 export function WeightedScroll({ enabled, children }: { enabled: boolean; children: ReactNode }) {
   const instance = useRef<Lenis | null>(null);
+  const requestTick = useRef<() => void>(() => {});
 
   useEffect(() => {
     if (!enabled) return;
-    // Keep native document scrolling so sticky scenes and Motion share one position.
+    let frame = 0;
+    const tick = (time: number) => {
+      frame = 0;
+      lenis.raf(time);
+      if (lenis.isScrolling === 'smooth') frame = requestAnimationFrame(tick);
+    };
+    const wake = () => {
+      if (!frame && !document.hidden) {
+        lenis.time = 0;
+        frame = requestAnimationFrame(tick);
+      }
+    };
+    // Native touch needs no animation loop. Wheel/anchor motion wakes one on demand.
     const lenis = new Lenis({
-      autoRaf: true,
+      autoRaf: false,
       smoothWheel: true,
       lerp: .065,
       wheelMultiplier: .8,
       syncTouch: false,
-      anchors: { offset: -24, duration: 1.4, lerp: 0 },
+      anchors: { offset: -24, duration: 1.4, lerp: 0, onStart: wake },
       prevent: node => node.hasAttribute('data-lenis-prevent'),
     });
     instance.current = lenis;
-    return () => { instance.current = null; lenis.destroy(); };
+    requestTick.current = wake;
+    const visibility = () => {
+      if (document.hidden) { cancelAnimationFrame(frame); frame = 0; }
+      else if (lenis.isScrolling === 'smooth') wake();
+    };
+    window.addEventListener('wheel', wake, { passive: true });
+    document.addEventListener('visibilitychange', visibility);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('wheel', wake);
+      document.removeEventListener('visibilitychange', visibility);
+      requestTick.current = () => {};
+      instance.current = null;
+      lenis.destroy();
+    };
   }, [enabled]);
 
   const scrollTo = useCallback((top: number) => {
-    if (instance.current) instance.current.scrollTo(top, { duration: 1.4, lerp: 0 });
+    if (instance.current) {
+      instance.current.scrollTo(top, { duration: 1.4, lerp: 0 });
+      requestTick.current();
+    }
     else window.scrollTo({ top, behavior: enabled ? 'smooth' : 'instant' });
   }, [enabled]);
 

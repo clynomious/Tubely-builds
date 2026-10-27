@@ -47,3 +47,4 @@ const socialLogo = await sharp(path.join(images, 'logo-stacked.webp')).resize({ 
 await sharp({ create: { width: 1200, height: 630, channels: 4, background: '#f1e6ff' } })
   .composite([{ input: socialLogo, gravity: 'center' }]).png().toFile(path.join(images, 'social.png'));
 console.log('Prepared Tubely brand assets, seven screenshots and overlay loop.');
+await import('./prepare-responsive-assets.mjs');
