@@ -3,8 +3,9 @@
 import { useScroll, useTransform } from 'motion/react';
 import * as motion from 'motion/react-m';
 import { useEffect, useState } from 'react';
+import { useCompactMotion } from './motion-profile';
 
-export function AmbientBackground({ paused }: { paused: boolean }) {
+function AnimatedBackground({ paused }: { paused: boolean }) {
   const [hidden, setHidden] = useState(false);
   const { scrollYProgress } = useScroll();
   const y = useTransform(scrollYProgress, [0, 1], [40, -160]);
@@ -31,4 +32,10 @@ export function AmbientBackground({ paused }: { paused: boolean }) {
     </svg>
     </motion.div>
   </div>;
+}
+
+export function AmbientBackground({ paused }: { paused: boolean }) {
+  const compact = useCompactMotion();
+  if (compact) return <div className="ambient-background ambient-lite" aria-hidden="true"><div className="ambient-cloud cloud-pink" /><div className="ambient-cloud cloud-mint" /></div>;
+  return <AnimatedBackground paused={paused} />;
 }

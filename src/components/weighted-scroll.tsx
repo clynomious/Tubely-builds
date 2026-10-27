@@ -10,7 +10,7 @@ export function useWeightedNavigation() {
   return useContext(ScrollNavigation);
 }
 
-export function WeightedScroll({ enabled, children }: { enabled: boolean; children: ReactNode }) {
+export function WeightedScroll({ enabled, nativeSmooth = enabled, children }: { enabled: boolean; nativeSmooth?: boolean; children: ReactNode }) {
   const instance = useRef<Lenis | null>(null);
   const requestTick = useRef<() => void>(() => {});
 
@@ -61,8 +61,8 @@ export function WeightedScroll({ enabled, children }: { enabled: boolean; childr
       instance.current.scrollTo(top, { duration: 1.4, lerp: 0 });
       requestTick.current();
     }
-    else window.scrollTo({ top, behavior: enabled ? 'smooth' : 'instant' });
-  }, [enabled]);
+    else window.scrollTo({ top, behavior: nativeSmooth ? 'smooth' : 'instant' });
+  }, [nativeSmooth]);
 
   return <ScrollNavigation.Provider value={scrollTo}>{children}</ScrollNavigation.Provider>;
 }

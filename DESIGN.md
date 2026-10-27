@@ -172,6 +172,10 @@ Large circles, elliptical SVG orbits, rounded pose sheets, pills, and organic pa
 
 ## Do's and Don'ts
 
+### Mobile motion budget
+
+The user explicitly approved reducing costly mobile animation after reporting Android scroll stutter. At up to 800px, or up to 1100px with a coarse pointer, use browser scrolling, a static opening backdrop, 2D story/gallery movement, fewer image filters, and a tap-to-play overlay video. Retain the shorter opening, pet response, draggable assembling letters, four-act sticky narrative and waveform, interactive motion demo, fan-gallery controls/swipe, and closing logo reveal. Desktop retains the full treatment. Keep this lighter profile separate from manual pause and operating-system reduced motion; do not flatten the entire mobile experience into static content.
+
 Mobile performance preserves this visual system: viewport-scoped scroll subscriptions retain native ViewTimeline support, transparent story acts stop painting while crossfades remain intact, story colors blend through constant-color layers, and Lenis schedules frames only while smoothing. Native responsive pictures select AVIF or WebP at the actual display size. Only the opening mascot receives high priority and a matching preload; below-fold images and the video poster wait until needed. Content-hashed asset names support immutable caching. LazyMotion retains the complete domMax interaction set in a separate chunk. The flowing trace has its own paint layer, and the support clip animation attaches near the viewport. These changes retain the original motion geometry, timings, touch/keyboard controls, and reduced-motion flow; they are not measured performance claims.
 
 ### Do:

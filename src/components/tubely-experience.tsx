@@ -11,6 +11,7 @@ import { DemoMotion } from './demo-motion';
 import { AmbientBackground } from './ambient-background';
 import { useSceneScroll } from './use-scene-scroll';
 import { HERO_MASCOT_SIZES, ResponsiveImage, letterImageSizes, type ImageName } from './responsive-image';
+import { CompactMotion, useCompactMotion, useCompactMotionProfile } from './motion-profile';
 
 const MotionPreference = createContext(false);
 const loadMotionFeatures = () => import('./motion-features').then(module => module.default);
@@ -50,22 +51,31 @@ function OverlayLoop() {
   const visible = useInView(ref, { margin: '80px' });
   const prepare = useInView(ref, { margin: '600px', once: true });
   const paused = useContext(MotionPreference);
+  const compact = useCompactMotion();
+  const [requested, setRequested] = useState(false);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const update = () => {
-      if (visible && !paused && !document.hidden) void el.play().catch(() => {});
+      if (visible && !paused && !document.hidden && (!compact || requested)) void el.play().catch(() => {});
       else el.pause();
     };
     update();
     document.addEventListener('visibilitychange', update);
     return () => { el.pause(); document.removeEventListener('visibilitychange', update); };
-  }, [visible, paused]);
-  return <video ref={ref} loop muted playsInline preload="none" poster={prepare ? '/images/overlay-poster.webp' : undefined} aria-label="Animated Tubely overlay"><source src="/media/tubely-overlay.webm" type="video/webm" /></video>;
+  }, [visible, paused, compact, requested]);
+  return <div className="overlay-preview"><video ref={ref} loop muted playsInline preload="none" poster={prepare ? '/images/overlay-poster.webp' : undefined} aria-label="Animated Tubely overlay"><source src="/media/tubely-overlay.webm" type="video/webm" /></video>
+    {compact && <button className="overlay-preview-toggle" disabled={paused} aria-pressed={requested} onClick={() => setRequested(value => !value)}>{requested ? <Pause weight="fill" /> : <Play weight="fill" />}{requested ? 'Pause preview' : 'Play preview'}</button>}
+  </div>;
 }
 
 // Geometric signal traces carry the voice-to-broadcast narrative.
 function SignalOrbit({ progress }: { progress: MotionValue<number> }) {
+  const compact = useCompactMotion();
+  return compact ? null : <AnimatedSignalOrbit progress={progress} />;
+}
+
+function AnimatedSignalOrbit({ progress }: { progress: MotionValue<number> }) {
   const paused = useContext(MotionPreference);
   const length = useTransform(progress, [0, .65, 1], [.1, .9, 1]);
   const turn = useTransform(progress, [0, 1], [-35, 40]);
@@ -80,7 +90,8 @@ function SignalOrbit({ progress }: { progress: MotionValue<number> }) {
 function Hero() {
   const ref = useRef<HTMLElement>(null);
   const paused = useContext(MotionPreference);
-  const p = useSceneScroll(ref, 'exit', !paused);
+  const compact = useCompactMotion();
+  const p = useSceneScroll(ref, 'exit', !paused && !compact);
   const headlineY = useTransform(p, [0, 1], [0, -150]);
   const headlineX = useTransform(p, [0, 1], [0, -90]);
   const catY = useTransform(p, [0, 1], [0, 180]);
@@ -92,25 +103,25 @@ function Hero() {
   const tiltX = useSpring(py, { stiffness: 90, damping: 20 }), tiltY = useSpring(px, { stiffness: 90, damping: 20 });
   const [pets, setPets] = useState(0);
   return <section className="hero-scene" id="home" ref={ref}><div className="hero-grid wrap">
-    <motion.div className="hero-planet" style={paused ? undefined : { scale: bloom }} aria-hidden="true" />
-    <motion.div className="hero-heading" style={paused ? undefined : { y: headlineY, x: headlineX }}>
+    <motion.div className="hero-planet" style={paused || compact ? undefined : { scale: bloom }} aria-hidden="true" />
+    <motion.div className="hero-heading" style={paused || compact ? undefined : { y: headlineY, x: headlineX }}>
       <h1><span className="hero-line"><span>Your character.</span></span><span className="hero-line hero-line-purple"><span>Your kind of live.</span></span></h1><p className="hero-copy-entry">PNGTuber & live streaming for Android.<br className="desktop-break" /> Bring your little world to life.</p>
       <div className="hero-actions hero-actions-entry"><DownloadLink /><a className="text-link" href="#story">Take a look <ArrowDown /></a></div>
     </motion.div>
     <div className="hero-space" onPointerMove={e => {
-      if (paused || e.pointerType !== 'mouse') return;
+      if (paused || compact || e.pointerType !== 'mouse') return;
       const r = e.currentTarget.getBoundingClientRect();
       px.set(((e.clientX - r.left) / r.width - .5) * 20); py.set(-((e.clientY - r.top) / r.height - .5) * 14);
     }} onPointerLeave={() => { px.set(0); py.set(0); }}>
       <SignalOrbit progress={p} />
-      <motion.div className="hero-device" style={paused ? undefined : { y: phoneY, rotate: phoneRotate, rotateY: -24 }}><div className="hero-device-entry"><Phone screen="studio" eager sizes="(max-width: 360px) 120px, (max-width: 640px) 135px, (max-width: 800px) 151px, (max-width: 1100px) 156px, 191px" /></div></motion.div>
-      <motion.div className="hero-mascot-travel" style={paused ? undefined : { y: catY, rotate: catTurn }}>
-        <motion.button className="hero-mascot" aria-label="Pet the Tubely mascot" onClick={() => setPets(n => n + 1)} style={paused ? undefined : { rotateX: tiltX, rotateY: tiltY }} whileTap={paused ? undefined : { scale: .92 }}>
+      <motion.div className="hero-device" style={paused ? undefined : compact ? { rotate: 6 } : { y: phoneY, rotate: phoneRotate, rotateY: -24 }}><div className="hero-device-entry"><Phone screen="studio" eager sizes="(max-width: 360px) 120px, (max-width: 640px) 135px, (max-width: 800px) 151px, (max-width: 1100px) 156px, 191px" /></div></motion.div>
+      <motion.div className="hero-mascot-travel" style={paused ? undefined : compact ? { rotate: -5 } : { y: catY, rotate: catTurn }}>
+        <motion.button className="hero-mascot" aria-label="Pet the Tubely mascot" onClick={() => setPets(n => n + 1)} style={paused || compact ? undefined : { rotateX: tiltX, rotateY: tiltY }} whileTap={paused ? undefined : { scale: .92 }}>
           <div className="hero-mascot-entry"><BrandImage name="mascot" eager priority sizes={HERO_MASCOT_SIZES} /></div>
           <AnimatePresence>{pets > 0 && <motion.span key={pets} className="pet-heart" initial={paused ? false : { scale: .4, y: 0, opacity: 1 }} animate={{ scale: 1.5, y: paused ? 0 : -150, opacity: 0 }} transition={{ duration: paused ? .15 : 1.2 }}><Heart weight="fill" /></motion.span>}</AnimatePresence>
         </motion.button>
       </motion.div>
-      <motion.span className="hero-flower" style={paused ? undefined : { rotate: phoneRotate }} aria-hidden="true"><Flower weight="fill" /></motion.span><Star className="hero-star" weight="fill" aria-hidden="true" />
+      <motion.span className="hero-flower" style={paused || compact ? undefined : { rotate: phoneRotate }} aria-hidden="true"><Flower weight="fill" /></motion.span><Star className="hero-star" weight="fill" aria-hidden="true" />
     </div><span className="hero-live-seal"><Broadcast weight="bold" /> PNGTuber + Live</span>
   </div></section>;
 }
@@ -120,9 +131,10 @@ function JellyLetter({ letter, index, progress, ready }: {
   letter: string; index: number; progress: MotionValue<number>; ready: boolean;
 }) {
   const paused = useContext(MotionPreference);
-  const x = useTransform(progress, [0, .45], [(index - 2.5) * 105, 0]);
-  const y = useTransform(progress, [0, .45], [index % 2 ? 120 : -120, 0]);
-  const rotate = useTransform(progress, [0, .45], [index % 2 ? 50 : -50, (index - 2.5) * -3]);
+  const compact = useCompactMotion();
+  const x = useTransform(progress, [0, .45], [(index - 2.5) * (compact ? 18 : 105), 0]);
+  const y = useTransform(progress, [0, .45], [index % 2 ? (compact ? 36 : 120) : (compact ? -36 : -120), 0]);
+  const rotate = useTransform(progress, [0, .45], [index % 2 ? (compact ? 18 : 50) : (compact ? -18 : -50), (index - 2.5) * -3]);
   const dragX = useMotionValue(0), dragY = useMotionValue(0);
   const [dragging, setDragging] = useState(false);
   const move = useCallback<MoveLetter>((dx, dy, reset = false) => {
@@ -179,12 +191,13 @@ function StoryWave({ progress }: { progress: MotionValue<number> }) {
 
 function CharacterScene({ progress }: { progress: MotionValue<number> }) {
   const paused = useContext(MotionPreference);
-  const leftX = useTransform(progress, [0, .2], [-65, -155]);
-  const rightX = useTransform(progress, [0, .2], [65, 155]);
+  const compact = useCompactMotion();
+  const leftX = useTransform(progress, [0, .2], compact ? [-30, -80] : [-65, -155]);
+  const rightX = useTransform(progress, [0, .2], compact ? [30, 80] : [65, 155]);
   const turn = useTransform(progress, [0, .2], [-22, -5]);
   return <div className="character-scene scene-visual"><SignalOrbit progress={progress} />
-    <motion.div className="pose-sheet sheet-idle" style={paused ? undefined : { x: leftX, rotateY: turn, rotate: -12 }}><BrandImage name="mascot" sizes="(max-width: 800px) 140px, 196px" /><span>Idle</span></motion.div>
-    <motion.div className="pose-sheet sheet-speaking" style={paused ? undefined : { x: rightX, rotateY: turn, rotate: 12 }}><BrandImage name="mascot" sizes="(max-width: 800px) 140px, 196px" /><span>Speaking</span></motion.div><span className="scene-plus" aria-hidden="true"><Plus weight="bold" /></span>
+    <motion.div className="pose-sheet sheet-idle" style={paused ? undefined : { x: leftX, rotateY: compact ? 0 : turn, rotate: -12 }}><BrandImage name="mascot" sizes="(max-width: 800px) 140px, 196px" /><span>Idle</span></motion.div>
+    <motion.div className="pose-sheet sheet-speaking" style={paused ? undefined : { x: rightX, rotateY: compact ? 0 : turn, rotate: 12 }}><BrandImage name="mascot" sizes="(max-width: 800px) 140px, 196px" /><span>Speaking</span></motion.div><span className="scene-plus" aria-hidden="true"><Plus weight="bold" /></span>
   </div>;
 }
 
@@ -197,10 +210,11 @@ function VoiceScene({ progress }: { progress: MotionValue<number> }) {
 
 function SceneLayer({ type, index, progress }: { type: 'avatar' | 'image' | 'text'; index: number; progress: MotionValue<number> }) {
   const paused = useContext(MotionPreference);
-  const y = useTransform(progress, [.43, .57, .72], [120 + index * 65, index * -40, index * -8]);
+  const compact = useCompactMotion();
+  const y = useTransform(progress, [.43, .57, .72], compact ? [55 + index * 30, index * -24, index * -8] : [120 + index * 65, index * -40, index * -8]);
   const z = useTransform(progress, [.43, .57, .72], [index * 100, index * 75, index * 10]);
   const rotateX = useTransform(progress, [.43, .62, .73], [58, 35, 0]);
-  return <motion.div className={`scene-layer layer-${type}`} style={paused ? undefined : { y, z, rotateX, rotateZ: -12 }}>
+  return <motion.div className={`scene-layer layer-${type}`} style={paused ? undefined : compact ? { y, rotate: (index - 1) * 8 } : { y, z, rotateX, rotateZ: -12 }}>
     {type === 'avatar' ? <BrandImage name="mascot" sizes="(max-width: 640px) 150px, 210px" /> : type === 'image' ? <><MoonStars weight="duotone" /><span className="landscape-shape" /></> : <span className="layer-copy">Hello,<br />everyone!</span>}
   </motion.div>;
 }
@@ -211,18 +225,20 @@ function StudioScene({ progress }: { progress: MotionValue<number> }) {
 
 function LiveScene({ progress }: { progress: MotionValue<number> }) {
   const paused = useContext(MotionPreference);
+  const compact = useCompactMotion();
   const rotateY = useTransform(progress, [.68, .86, 1], [-42, -8, 12]);
   const rotateZ = useTransform(progress, [.68, 1], [-12, 8]);
   const scale = useTransform(progress, [.68, .85, 1], [.65, 1, 1.05]);
   const ring1 = useTransform(progress, [.7, .9], [.1, 1]);
   const ring2 = useTransform(progress, [.8, 1], [.1, 1]);
-  return <div className="live-scene scene-visual"><svg className="broadcast-svg" viewBox="0 0 640 640" fill="none" aria-hidden="true"><motion.circle cx="320" cy="320" r="195" stroke="currentColor" strokeWidth="2" strokeDasharray="5 12" style={{ pathLength: paused ? 1 : ring1 }} /><motion.circle cx="320" cy="320" r="265" stroke="currentColor" strokeWidth="2" style={{ pathLength: paused ? 1 : ring2 }} /><motion.circle cx="320" cy="320" r="300" stroke="currentColor" strokeOpacity=".2" style={{ scale: paused ? 1 : scale }} /></svg>
-    <motion.div className="live-device" style={paused ? undefined : { rotateY, rotateZ, scale }}><Phone screen="studio" sizes="(max-width: 640px) 123px, (max-width: 800px) 154px, (max-width: 1100px) 171px, 191px" /></motion.div><span className="on-air"><Broadcast weight="fill" /> LIVE</span>
+  return <div className="live-scene scene-visual"><svg className="broadcast-svg" viewBox="0 0 640 640" fill="none" aria-hidden="true">{compact ? <circle cx="320" cy="320" r="265" stroke="currentColor" strokeWidth="2" strokeDasharray="5 12" /> : <><motion.circle cx="320" cy="320" r="195" stroke="currentColor" strokeWidth="2" strokeDasharray="5 12" style={{ pathLength: paused ? 1 : ring1 }} /><motion.circle cx="320" cy="320" r="265" stroke="currentColor" strokeWidth="2" style={{ pathLength: paused ? 1 : ring2 }} /><motion.circle cx="320" cy="320" r="300" stroke="currentColor" strokeOpacity=".2" style={{ scale: paused ? 1 : scale }} /></>}</svg>
+    <motion.div className="live-device" style={paused ? undefined : compact ? { rotate: -4, scale } : { rotateY, rotateZ, scale }}><Phone screen="studio" sizes="(max-width: 640px) 123px, (max-width: 800px) 154px, (max-width: 1100px) 171px, 191px" /></motion.div><span className="on-air"><Broadcast weight="fill" /> LIVE</span>
   </div>;
 }
 
 function StoryAct({ index, progress, active }: { index: number; progress: MotionValue<number>; active: number }) {
   const paused = useContext(MotionPreference);
+  const compact = useCompactMotion();
   const start = index / 4, end = (index + 1) / 4;
   const input = index === 0 ? [0, end - .06, end + .035] : index === 3 ? [start - .06, start + .035, 1] : [start - .06, start + .035, end - .06, end + .035];
   const opacity = useTransform(progress, input, index === 0 ? [1, 1, 0] : index === 3 ? [0, 1, 1] : [0, 1, 1, 0]);
@@ -235,7 +251,7 @@ function StoryAct({ index, progress, active }: { index: number; progress: Motion
   const rotateY = useTransform(sceneProgress, [Math.max(0, start - .06), start + .08, end], [index === 0 ? 0 : -15, 0, 12]);
   const Visual = [CharacterScene, VoiceScene, StudioScene, LiveScene][index];
   return <motion.article id={`story-${index}`} className={`story-act act-${index}`} aria-hidden={paused ? undefined : active !== index} style={paused ? undefined : { opacity, visibility, pointerEvents: active === index ? 'auto' : 'none' }}>
-    <motion.div className="story-copy" style={paused ? undefined : { y }}><h2>{storySteps[index].title}</h2><p>{storySteps[index].description}</p></motion.div><motion.div className="story-visual" style={paused ? undefined : { rotateY }}><Visual progress={sceneProgress} /></motion.div>
+    <motion.div className="story-copy" style={paused ? undefined : { y }}><h2>{storySteps[index].title}</h2><p>{storySteps[index].description}</p></motion.div><motion.div className="story-visual" style={paused || compact ? undefined : { rotateY }}><Visual progress={sceneProgress} /></motion.div>
   </motion.article>;
 }
 
@@ -251,6 +267,7 @@ function ScrollStory() {
   const ref = useRef<HTMLElement>(null);
   const navigate = useWeightedNavigation();
   const paused = useContext(MotionPreference);
+  const compact = useCompactMotion();
   const p = useSceneScroll(ref, 'pinned', !paused);
   const [active, setActive] = useState(0);
   const currentStep = useRef(0);
@@ -267,8 +284,8 @@ function ScrollStory() {
     navigate(top + Math.max(0, el.offsetHeight - window.innerHeight) * ((index + .45) / 4));
   }
   return <section className="story-scroll" id="story" ref={ref} aria-label="From character to live stream"><div className="story-sticky">
-    {!paused && <div className="story-atmosphere" aria-hidden="true">{[1, 2, 3].map(index => <StoryTint key={index} index={index} progress={p} />)}</div>}
-    <svg className="story-thread" viewBox="0 0 1400 800" fill="none" preserveAspectRatio="none" aria-hidden="true"><motion.path d="M-30 700C160 700 110 170 350 180S500 720 750 650S850 50 1120 100S1230 600 1450 400" stroke="currentColor" strokeWidth="2" strokeLinecap="round" style={{ pathLength: paused ? 1 : threadLength }} /></svg>
+    {!paused && !compact && <div className="story-atmosphere" aria-hidden="true">{[1, 2, 3].map(index => <StoryTint key={index} index={index} progress={p} />)}</div>}
+    {!compact && <svg className="story-thread" viewBox="0 0 1400 800" fill="none" preserveAspectRatio="none" aria-hidden="true"><motion.path d="M-30 700C160 700 110 170 350 180S500 720 750 650S850 50 1120 100S1230 600 1450 400" stroke="currentColor" strokeWidth="2" strokeLinecap="round" style={{ pathLength: paused ? 1 : threadLength }} /></svg>}
     {!paused && <div className="sr-only"><h2>From avatar to live stream</h2>{storySteps.map(step => <div key={step.label}><h3>{step.title}</h3><p>{step.description}</p></div>)}</div>}
     <div className="story-stage wrap" aria-hidden={paused ? undefined : true}>{storySteps.map((_, index) => <StoryAct key={index} index={index} progress={p} active={active} />)}</div>
     <div className="story-chapters" role="group" aria-label="Choose a scene">{storySteps.map((step, index) => <button key={step.label} onClick={() => goTo(index)} aria-pressed={active === index}><span>{step.label}</span><i aria-hidden="true" /></button>)}</div>
@@ -279,8 +296,9 @@ function ScrollStory() {
 function Playground() {
   const ref = useRef<HTMLElement>(null), bounds = useRef<HTMLDivElement>(null), actor = useRef<HTMLDivElement>(null);
   const paused = useContext(MotionPreference);
+  const compact = useCompactMotion();
   const visible = useInView(ref, { margin: '100px' });
-  const p = useSceneScroll(ref, 'through', !paused);
+  const p = useSceneScroll(ref, 'through', !paused && !compact);
   const turn = useTransform(p, [0, .45, 1], [18, 0, -8]);
   const catScale = useTransform(p, [0, .45, 1], [.8, 1, 1.07]);
   const [mode, setMode] = useState<'float' | 'bounce' | 'wiggle'>('bounce');
@@ -292,11 +310,11 @@ function Playground() {
     x.set(Math.max(-maxX, Math.min(maxX, x.get() + dx))); y.set(Math.max(-maxY, Math.min(maxY, y.get() + dy)));
   }
   return <section className="playground-section" ref={ref} id="playground"><div className="wrap"><div className="section-heading"><h2>A little bounce.<br /><em>A lot of you.</em></h2><p>Go on. Play a little.</p></div>
-    <div className="playground-layout"><motion.div className={`play-stage stage-${color}`} ref={bounds} style={paused ? undefined : { rotateX: turn }}><SignalOrbit progress={p} />
+    <div className="playground-layout"><motion.div className={`play-stage stage-${color}`} ref={bounds} style={paused || compact ? undefined : { rotateX: turn }}><SignalOrbit progress={p} />
       <motion.div className="draggable-mascot" ref={actor} drag dragConstraints={bounds} dragElastic={.08} dragMomentum={false} style={{ x, y }} tabIndex={0} role="group" aria-label="Drag your avatar or use the arrow keys. Press Home to reset." onKeyDown={e => {
         const dx = e.key === 'ArrowLeft' ? -16 : e.key === 'ArrowRight' ? 16 : 0, dy = e.key === 'ArrowUp' ? -16 : e.key === 'ArrowDown' ? 16 : 0;
         if (dx || dy || e.key === 'Home') { e.preventDefault(); if (e.key === 'Home') { x.set(0); y.set(0); } else move(dx, dy); }
-      }}><motion.div style={paused ? undefined : { scale: catScale }}><DemoMotion mode={mode} speed={speed} active={!paused && visible}><BrandImage name="mascot" sizes="(max-width: 640px) 205px, 270px" /></DemoMotion></motion.div></motion.div>
+      }}><motion.div style={paused || compact ? undefined : { scale: catScale }}><DemoMotion mode={mode} speed={speed} active={!paused && visible}><BrandImage name="mascot" sizes="(max-width: 640px) 205px, 270px" /></DemoMotion></motion.div></motion.div>
       <span className="stage-shadow" aria-hidden="true" /><button className="stage-reset" onClick={() => { x.set(0); y.set(0); }}><ArrowsOut /> Reset position</button>
     </motion.div><div className="play-controls"><div className="motion-choices" role="group" aria-label="Avatar motion">{[
       { id: 'float' as const, label: 'Float', icon: MoonStars }, { id: 'bounce' as const, label: 'Bounce', icon: ArrowUpRight }, { id: 'wiggle' as const, label: 'Wiggle', icon: Sparkle },
@@ -311,24 +329,26 @@ function Playground() {
 
 function GalleryPhone({ screen, index, progress }: { screen: string; index: number; progress: MotionValue<number> }) {
   const paused = useContext(MotionPreference), slot = index - 2;
+  const compact = useCompactMotion();
   const x = useTransform(progress, [0, .48, 1], [slot * 25, slot * 195, slot * 220]);
   const y = useTransform(progress, [0, .48, 1], [Math.abs(slot) * 85, Math.abs(slot) * 35, Math.abs(slot) * -50]);
   const rotate = useTransform(progress, [0, .48, 1], [slot * 22, slot * 9, slot * -5]);
   const rotateY = useTransform(progress, [0, .48, 1], [slot * -25, slot * -8, slot * 12]);
-  return <motion.div className={`fan-phone fan-${index}`} style={paused ? undefined : { x, y, rotate, rotateY, zIndex: 5 - Math.abs(slot) }}><Phone screen={screen} /></motion.div>;
+  return <motion.div className={`fan-phone fan-${index}`} style={paused ? undefined : { x, y, rotate, rotateY: compact ? 0 : rotateY, zIndex: 5 - Math.abs(slot) }}><Phone screen={screen} /></motion.div>;
 }
 
 function AppGallery() {
   const ref = useRef<HTMLElement>(null);
   const [active, setActive] = useState('home');
   const paused = useContext(MotionPreference);
+  const compact = useCompactMotion();
   const p = useSceneScroll(ref, 'through', !paused);
   const headlineX = useTransform(p, [0, 1], [70, -70]);
   const activeIndex = screens.findIndex(screen => screen.key === active);
   function changeScreen(direction: number) {
     setActive(current => screens[(screens.findIndex(screen => screen.key === current) + direction + screens.length) % screens.length].key);
   }
-  return <section className="gallery-section" id="inside" ref={ref}><motion.div className="gallery-title wrap" style={paused ? undefined : { x: headlineX }}><h2>Your whole setup.<br /><em>Right here.</em></h2></motion.div>
+  return <section className="gallery-section" id="inside" ref={ref}><motion.div className="gallery-title wrap" style={paused || compact ? undefined : { x: headlineX }}><h2>Your whole setup.<br /><em>Right here.</em></h2></motion.div>
     <motion.div className="phone-fan" aria-hidden="true" onPanEnd={(_, info) => {
       if (!window.matchMedia('(max-width: 640px)').matches) return;
       if (Math.abs(info.offset.x) >= 45 && Math.abs(info.offset.x) > Math.abs(info.offset.y) * 1.2) changeScreen(info.offset.x < 0 ? 1 : -1);
@@ -341,9 +361,10 @@ function AppGallery() {
 
 function OutputDemo({ index, progress }: { index: number; progress: MotionValue<number> }) {
   const paused = useContext(MotionPreference);
+  const compact = useCompactMotion();
   const rotate = useTransform(progress, [0, .5, 1], [index === 0 ? -22 : 22, index === 0 ? -5 : 5, index === 0 ? 8 : -8]);
   const y = useTransform(progress, [0, .5, 1], [90, 0, -50]);
-  return <motion.article className={`output-panel output-${index}`} style={paused ? undefined : { rotate, y }}>
+  return <motion.article className={`output-panel output-${index}`} style={paused || compact ? undefined : { rotate, y }}>
     {index === 0 ? <div className="floating-demo"><div className="floating-phone"><div /><div /><MoonStars weight="duotone" /><div /></div><BrandImage name="mascot" sizes="175px" /></div> : <div className="url-demo"><div className="url-address"><LinkSimple /> Overlay URL</div><OverlayLoop /></div>}
     <h3>{index === 0 ? 'Your little plus-one.' : 'Small buddy. Bigger screen.'}</h3><p>{index === 0 ? 'A floating avatar that hangs out above your other apps.' : 'Use your overlay URL on your phone or a PC on the same network.'}</p>
   </motion.article>;
@@ -352,7 +373,8 @@ function OutputDemo({ index, progress }: { index: number; progress: MotionValue<
 function Outputs() {
   const ref = useRef<HTMLElement>(null);
   const paused = useContext(MotionPreference);
-  const scrollYProgress = useSceneScroll(ref, 'through', !paused);
+  const compact = useCompactMotion();
+  const scrollYProgress = useSceneScroll(ref, 'through', !paused && !compact);
   return <section className="outputs-section" ref={ref}><div className="wrap"><h2>Take your character.<br /><em>Find your stage.</em></h2><div className="outputs-grid"><OutputDemo index={0} progress={scrollYProgress} /><OutputDemo index={1} progress={scrollYProgress} /></div></div></section>;
 }
 
@@ -370,17 +392,19 @@ function FAQ() {
 
 function SupportHeart({ index, progress }: { index: number; progress: MotionValue<number> }) {
   const paused = useContext(MotionPreference);
+  const compact = useCompactMotion();
   const y = useTransform(progress, [0, .5, 1], [100 + index * 25, -20 - index * 30, -155 - index * 20]);
   const x = useTransform(progress, [0, 1], [(index - 1) * 25, (index - 1) * 80]);
   const rotate = useTransform(progress, [0, 1], [-25 + index * 20, 30 - index * 15]);
-  return <motion.span className={`support-heart heart-${index}`} style={paused ? undefined : { x, y, rotate }} aria-hidden="true"><Heart weight="fill" /></motion.span>;
+  return <motion.span className={`support-heart heart-${index}`} style={paused ? undefined : compact ? { x: (index - 1) * 35, y: -30 - index * 25, rotate: -25 + index * 20 } : { x, y, rotate }} aria-hidden="true"><Heart weight="fill" /></motion.span>;
 }
 
 function CreatorCorner() {
   const ref = useRef<HTMLElement>(null);
   const paused = useContext(MotionPreference);
+  const compact = useCompactMotion();
   const nearby = useInView(ref, { margin: '320px' });
-  const p = useSceneScroll(ref, 'through', !paused);
+  const p = useSceneScroll(ref, 'through', !paused && !compact);
   const lift = useTransform(p, [0, .4, 1], [90, 0, -30]);
   const rotate = useTransform(p, [0, .4, 1], [-5, 0, 2]);
   const peek = useTransform(p, [0, .5, 1], [75, 0, -20]);
@@ -393,9 +417,9 @@ function CreatorCorner() {
     { label: 'TikTok', href: site.socials.tiktok, icon: TiktokLogo },
   ];
   return <section className="creator-section wrap" id="support" ref={ref}>
-    <motion.div className="support-frame" style={paused ? undefined : { y: lift, rotate, clipPath: nearby ? clipPath : 'inset(8% 4% 8% 4% round 45px)' }}>
-      <motion.div className="support-card" style={paused ? undefined : { rotateX: tiltX, rotateY: tiltY }} onPointerMove={e => {
-        if (paused || e.pointerType !== 'mouse') return;
+    <motion.div className="support-frame" style={paused || compact ? undefined : { y: lift, rotate, clipPath: nearby ? clipPath : 'inset(8% 4% 8% 4% round 45px)' }}>
+      <motion.div className="support-card" style={paused || compact ? undefined : { rotateX: tiltX, rotateY: tiltY }} onPointerMove={e => {
+        if (paused || compact || e.pointerType !== 'mouse') return;
         const r = e.currentTarget.getBoundingClientRect();
         px.set(((e.clientX - r.left) / r.width - .5) * 7); py.set(-((e.clientY - r.top) / r.height - .5) * 6);
       }} onPointerLeave={() => { px.set(0); py.set(0); }}>
@@ -407,7 +431,7 @@ function CreatorCorner() {
         </div>
         <div className="support-art" aria-hidden="true"><div className="support-blob" />
           {[0, 1, 2].map(index => <SupportHeart key={index} index={index} progress={p} />)}
-          <motion.div className="support-mascot" style={paused ? undefined : { y: peek }}><BrandImage name="mascot" sizes="260px" /></motion.div>
+          <motion.div className="support-mascot" style={paused || compact ? undefined : { y: peek }}><BrandImage name="mascot" sizes="260px" /></motion.div>
           <Coffee className="support-cup" weight="duotone" /><Flower className="support-flower" weight="fill" />
         </div>
       </motion.div>
@@ -422,16 +446,18 @@ function CreatorCorner() {
 function Download() {
   const ref = useRef<HTMLElement>(null);
   const paused = useContext(MotionPreference);
+  const compact = useCompactMotion();
   const p = useSceneScroll(ref, 'enter', !paused);
-  const scale = useTransform(p, [0, 1], [.6, 1]), rotate = useTransform(p, [0, 1], [-24, 3]), y = useTransform(p, [0, 1], [150, 0]);
+  const scale = useTransform(p, [0, 1], [compact ? .92 : .6, 1]), rotate = useTransform(p, [0, 1], [-24, 3]), y = useTransform(p, [0, 1], [compact ? 36 : 150, 0]);
   const pathLength = useTransform(p, [0, .9], [0, 1]);
-  return <section className="download-section" id="download" ref={ref}><svg className="download-ribbon" viewBox="0 0 1400 600" fill="none" preserveAspectRatio="none" aria-hidden="true"><motion.path d="M-50 450C220 650 220 0 500 160S800 700 1050 380S1220 30 1460 180" stroke="currentColor" strokeWidth="70" strokeLinecap="round" style={{ pathLength: paused ? 1 : pathLength }} /></svg>
-    <div className="download-layout wrap"><motion.div className="download-art" style={paused ? undefined : { scale, rotate, y }}><BrandImage name="logo-stacked" alt="Tubely" sizes="(max-width: 640px) 235px, 370px" /></motion.div><div className="download-copy"><h2>Your story.<br /><em>Let’s go live.</em></h2><div className="download-action"><DownloadLink /><ReleaseCaption /></div></div></div>
+  return <section className="download-section" id="download" ref={ref}><svg className="download-ribbon" viewBox="0 0 1400 600" fill="none" preserveAspectRatio="none" aria-hidden="true"><motion.path d="M-50 450C220 650 220 0 500 160S800 700 1050 380S1220 30 1460 180" stroke="currentColor" strokeWidth="70" strokeLinecap="round" style={{ pathLength: paused || compact ? 1 : pathLength }} /></svg>
+    <div className="download-layout wrap"><motion.div className="download-art" style={paused ? undefined : { scale, rotate: compact ? 0 : rotate, y }}><BrandImage name="logo-stacked" alt="Tubely" sizes="(max-width: 640px) 235px, 370px" /></motion.div><div className="download-copy"><h2>Your story.<br /><em>Let’s go live.</em></h2><div className="download-action"><DownloadLink /><ReleaseCaption /></div></div></div>
   </section>;
 }
 
 export function TubelyExperience() {
   const systemReduced = useReducedMotion();
+  const compact = useCompactMotionProfile();
   const [manualPause, setManualPause] = useState(false), [menu, setMenu] = useState(false);
   const paused = Boolean(systemReduced || manualPause);
   useEffect(() => {
@@ -440,11 +466,11 @@ export function TubelyExperience() {
     document.addEventListener('keydown', escape);
     return () => document.removeEventListener('keydown', escape);
   }, [menu]);
-  return <MotionPreference.Provider value={paused}><MotionConfig reducedMotion={paused ? 'always' : 'user'}><LazyMotion features={loadMotionFeatures} strict><LatestReleaseProvider><WeightedScroll enabled={!paused}><div className="experience" data-motion={paused ? 'off' : 'on'}><AmbientBackground paused={paused} /><SkipLink />
+  return <CompactMotion.Provider value={compact}><MotionPreference.Provider value={paused}><MotionConfig reducedMotion={paused ? 'always' : 'user'}><LazyMotion features={loadMotionFeatures} strict><LatestReleaseProvider><WeightedScroll enabled={!paused && !compact} nativeSmooth={!paused}><div className="experience" data-motion={paused ? 'off' : 'on'} data-motion-profile={compact ? 'compact' : 'full'}><AmbientBackground paused={paused} /><SkipLink />
     <header className="site-header wrap"><a href="#home" className="brand" aria-label="Tubely, back to top"><BrandImage name="logo" alt="Tubely" eager sizes="(max-width: 360px) 109px, (max-width: 640px) 125px, (max-width: 800px) 130px, (max-width: 1100px) 145px, 168px" /></a>
       <nav className={menu ? 'nav-open' : ''} aria-label="Main navigation"><a href="#story" onClick={() => setMenu(false)}>The story</a><a href="#playground" onClick={() => setMenu(false)}>Let’s play</a><a href="#support" onClick={() => setMenu(false)}>Support Tubely</a></nav>
       <div className="header-actions"><button className="motion-toggle" aria-pressed={paused} onClick={() => setManualPause(v => !v)} disabled={Boolean(systemReduced)} aria-label={systemReduced ? 'Animation follows your device settings' : paused ? 'Resume animation and smooth scrolling' : 'Pause animation and smooth scrolling'}>{paused ? <Play weight="fill" /> : <Pause weight="fill" />}</button><DownloadLink className="nav-download">Get Tubely <ArrowUpRight weight="bold" /></DownloadLink><button className="menu-toggle" onClick={() => setMenu(v => !v)} aria-label={menu ? 'Close menu' : 'Open menu'} aria-expanded={menu}>{menu ? <X /> : <Plus />}</button></div>
     </header><main id="main" tabIndex={-1}><Hero /><BrandAssembly /><ScrollStory /><Playground /><AppGallery /><Outputs /><FAQ /><CreatorCorner /><Download /></main>
     <footer className="site-footer wrap"><a className="footer-wordmark" href="#home">Tubely</a><p className="creator-credit">Built with <Heart weight="fill" aria-hidden="true" /><span className="sr-only">love</span> by <a href={site.socials.github} target="_blank" rel="noopener noreferrer">{site.creator}</a></p><a className="footer-releases" href={site.releases} target="_blank" rel="noopener noreferrer">What’s new <ArrowUpRight /></a></footer>
-  </div></WeightedScroll></LatestReleaseProvider></LazyMotion></MotionConfig></MotionPreference.Provider>;
+  </div></WeightedScroll></LatestReleaseProvider></LazyMotion></MotionConfig></MotionPreference.Provider></CompactMotion.Provider>;
 }

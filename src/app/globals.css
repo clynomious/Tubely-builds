@@ -45,6 +45,8 @@ p { line-height: 1.6; }
 
 /* A bounded ambient layer sits behind the open sections, never over controls. */
 .ambient-background { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; contain: strict; }
+.ambient-lite { position: absolute; bottom: auto; height: 100svh; }
+.ambient-lite .ambient-cloud { animation: none; transform: none; }
 .ambient-world { position: absolute; width: 115%; height: 120%; left: -7.5%; top: -10%; color: #b78bcc; opacity: .24; }
 .ambient-world > svg { position: absolute; inset: 0; width: 100%; height: 100%; contain: paint; }
 .ambient-dashes { transform: translateZ(0); }
@@ -211,6 +213,8 @@ input[type='range'] { width: 100%; accent-color: var(--purple); min-height: 30px
 .url-demo { height: 300px; margin-top: 30px; background: #e9dcf7; border-radius: 15px; overflow: clip; box-shadow: 0 25px 45px -25px #7041bc44; }
 .url-address { height: 43px; display: flex; align-items: center; gap: 10px; padding-inline: 18px; background: #f2e9fa; font-size: 13px; font-weight: 800; }
 .url-demo video { height: 250px; width: 100%; object-fit: contain; }
+.overlay-preview { position: relative; }
+.overlay-preview-toggle { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 9px; min-height: 44px; padding: 10px 16px; border-radius: 30px; background: var(--paper); color: var(--ink); font-size: 12px; font-weight: 900; white-space: nowrap; }
 .output-1 h3 { margin-top: 40px; }
 .faq-section { display: grid; grid-template-columns: .85fr 1.15fr; gap: 90px; align-items: start; padding-block: 70px 120px; }
 .faq-section h2 { font-size: 52px; }
@@ -419,6 +423,28 @@ html:has([data-motion='off']) { scroll-behavior: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* Mobile keeps the scroll story and playful controls, with a smaller paint budget. */
+@media (max-width: 800px), (max-width: 1100px) and (pointer: coarse) {
+  .hero-heading, .hero-planet, .story-visual, .play-stage, .output-panel, .support-frame, .support-card, .support-mascot { transform: none !important; }
+  .draggable-mascot > div { transform: none !important; }
+  .support-frame { clip-path: none !important; }
+  .hero-space, .story-visual, .scene-visual, .playground-layout, .phone-fan, .support-frame { perspective: none; }
+  .hero-device, .hero-mascot, .layer-stack, .scene-layer, .live-device, .fan-phone, .support-card { transform-style: flat; }
+  .hero-mascot, .jelly-letter img, .draggable-mascot img, .floating-demo > .asset-picture > img, .support-cup { filter: none; }
+  .support-copy, .support-art { transform: none; }
+  .stage-shadow { filter: none; opacity: .55; }
+  .scene-layer { box-shadow: none; }
+  .phone, .fan-phone .phone { box-shadow: inset 0 0 0 1px #86748e; }
+  .hero-line > span { animation-duration: .8s; }
+  .hero-copy-entry, .hero-actions-entry { animation-duration: .65s; }
+  .hero-mascot-entry { animation-duration: .85s; }
+  .hero-device-entry { animation-name: hero-device-open-compact; animation-duration: .85s; }
+}
+@keyframes hero-device-open-compact {
+  from { transform: translateY(40px) rotate(8deg); opacity: .5; }
+  to { transform: translateY(0) rotate(0); opacity: 1; }
 }
 @media (max-height: 650px) {
   .story-sticky { min-height: 0; }
