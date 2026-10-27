@@ -38,6 +38,12 @@ Bring your PNG avatar to life with your voice, arrange a scene, and go live from
 
 Your streaming account needs live access and a server URL/stream key for direct broadcasting. Available capture modes and actual resolution/FPS depend on your device and source. This is a beta; see each release for its changes and known limitations.
 
+## Website source
+
+The Tubely landing page lives in [`website/`](website/README.md), built with Next.js. It includes interactive avatar previews, the original app screenshots, and direct APK downloads that follow GitHub releases.
+
+For local development, run `npm install` and `npm run dev` inside `website/`.
+
 ## Support Tubely
 
 Help Tubely grow and bring new updates sooner.

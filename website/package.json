@@ -1,0 +1,26 @@
+{
+  "name": "tubely-website",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 0.0.0.0",
+    "build": "next build",
+    "typecheck": "tsc --noEmit",
+    "assets": "node scripts/prepare-assets.mjs"
+  },
+  "dependencies": {
+    "@phosphor-icons/react": "latest",
+    "lenis": "^1.3.27",
+    "motion": "latest",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "sharp": "latest",
+    "typescript": "latest"
+  }
+}
