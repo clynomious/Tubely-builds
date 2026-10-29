@@ -2,7 +2,7 @@
   <img src="public/images/logo.webp" width="480" alt="Tubely" />
   <p>Your avatar. Your stream. All from Android.</p>
   <p>
-    <a href="https://github.com/clynomious/Tubely-builds/releases/tag/v0.1.0-beta.10"><strong>Download Beta 10</strong></a>
+    <a href="https://github.com/clynomious/Tubely-builds/releases/tag/v0.1.0-beta.11"><strong>Download Beta 11</strong></a>
     &nbsp; · &nbsp;
     <a href="https://github.com/clynomious/Tubely-builds/releases">All releases</a>
   </p>
@@ -38,7 +38,9 @@ Bring your PNG avatar to life with your voice, arrange a scene, and go live from
 - Local video sources with playback, seeking, looping and audio controls; one video per scene.
 - Output options up to 1080p and a selectable target up to 60 fps.
 - Floating TikTok chat and live statistics.
+- Join notifications, gifts and grouped likes in live chat, with clearer names and messages.
 - Microphone noise suppression and separate game audio controls.
+- Sign in to Restream, sync your channels and import its streaming server settings.
 - Animated avatars and portable `.tbly` profile backups.
 - Add multiple browser overlays to a scene.
 - Automatic update checks with a short changelog when opening the app, plus in-app downloads and installation. Manual checks, creator links and Trakteer support are available in **About**.
@@ -49,7 +51,7 @@ Bring your PNG avatar to life with your voice, arrange a scene, and go live from
 2. **Create your avatar.** Import your images and adjust its voice response.
 3. **Choose your setup.** Open Studio Live, Floating avatar or Overlay URL, then connect your streaming destination.
 
-Your streaming account needs live access and a server URL/stream key for direct broadcasting. Available capture modes and actual resolution/FPS depend on your device and source. This is a beta; see each release for its changes and known limitations.
+Your streaming account needs live access. Enter a server URL/stream key for direct broadcasting, or sign in to Restream and review your active destinations there before using its server in Tubely. Available capture modes and actual resolution/FPS depend on your device and source. This is a beta; see each release for its changes and known limitations.
 
 ## Website source
 
