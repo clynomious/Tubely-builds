@@ -2,7 +2,7 @@
   <img src="public/images/logo.webp" width="480" alt="Tubely" />
   <p>Your avatar. Your stream. All from Android.</p>
   <p>
-    <a href="https://github.com/clynomious/Tubely-builds/releases/tag/v0.1.0-beta.11"><strong>Download Beta 11</strong></a>
+    <a href="https://github.com/clynomious/Tubely-builds/releases/tag/v0.1.0-beta.12"><strong>Download Beta 12</strong></a>
     &nbsp; · &nbsp;
     <a href="https://github.com/clynomious/Tubely-builds/releases">All releases</a>
   </p>
@@ -52,6 +52,8 @@ Bring your PNG avatar to life with your voice, arrange a scene, and go live from
 3. **Choose your setup.** Open Studio Live, Floating avatar or Overlay URL, then connect your streaming destination.
 
 Your streaming account needs live access. Enter a server URL/stream key for direct broadcasting, or sign in to Restream and review your active destinations there before using its server in Tubely. Available capture modes and actual resolution/FPS depend on your device and source. This is a beta; see each release for its changes and known limitations.
+
+**Moving from Beta 11 or earlier:** Beta 12 uses the new Android package `cly.tubely.app` and installs as a separate app. Export your profiles as `.tbly` in the old app, install the new APK manually, then import the backup. Settings, permissions and account sign-ins need to be set up again. The old app's updater cannot install this package as an update.
 
 ## Website source
 
