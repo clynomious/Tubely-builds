@@ -2,7 +2,7 @@
   <img src="public/images/logo.webp" width="480" alt="Tubely" />
   <p>Your avatar. Your stream. All from Android.</p>
   <p>
-    <a href="https://github.com/clynomious/Tubely-builds/releases/tag/v0.1.0-beta.12"><strong>Download Beta 12</strong></a>
+    <a href="https://github.com/clynomious/Tubely-builds/releases/tag/v0.1.0-beta.13"><strong>Download Beta 13</strong></a>
     &nbsp; · &nbsp;
     <a href="https://github.com/clynomious/Tubely-builds/releases">All releases</a>
   </p>
@@ -41,6 +41,8 @@ Bring your PNG avatar to life with your voice, arrange a scene, and go live from
 - Join notifications, gifts and grouped likes in live chat, with clearer names and messages.
 - Microphone noise suppression and separate game audio controls.
 - Sign in to Restream, sync your channels and import its streaming server settings.
+- Edit supported Restream channel titles, descriptions and active destinations from Tubely.
+- Configure Tubely-managed YouTube broadcasts with a separate YouTube sign-in, including categories, privacy and thumbnail uploads.
 - Animated avatars and portable `.tbly` profile backups.
 - Add multiple browser overlays to a scene.
 - Automatic update checks with a short changelog when opening the app, plus in-app downloads and installation. Manual checks, creator links and Trakteer support are available in **About**.
