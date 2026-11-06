@@ -268,6 +268,11 @@ input[type='range'] { width: 100%; accent-color: var(--purple); min-height: 30px
 .site-footer > p { font-size: 13px; color: var(--muted); }
 .site-footer > a:last-child { font-size: 13px; font-weight: 800; display: flex; gap: 8px; align-items: center; }
 .site-footer .creator-credit { display: flex; gap: 6px; align-items: center; font-size: 14px; color: var(--muted); }
+.privacy-page { max-width: 760px; padding-block: 56px; line-height: 1.65; }
+.privacy-page h1, .privacy-page h2 { margin-block: 24px 8px; }
+.privacy-page p { margin-block: 0 16px; }
+.privacy-page a, .footer-privacy { text-decoration: underline; }
+.footer-privacy { white-space: nowrap; }
 .creator-credit > svg { color: #c36191; font-size: 18px; transition: transform .3s; }
 .creator-credit > a { color: var(--ink); font-weight: 900; text-decoration: underline; text-decoration-color: #d5b9e7; }
 .creator-credit:hover > svg, .creator-credit:focus-within > svg { transform: scale(1.25) rotate(-10deg); }
